@@ -16,14 +16,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using System.Windows;
+using Microsoft.Toolkit.Uwp.Notifications;
+using System.IO.Ports;
 
 namespace Nya_Desktop
 {
     public partial class Form1 : Form
     {
-        PictureBox pb1;
         ContextMenu cm = new ContextMenu();
-        string specificFolder;
         string currentLogFile;
         string imageURL = "https://cdn.waifu.im/7581.jpg";
 
@@ -130,13 +131,10 @@ namespace Nya_Desktop
             {
                 client.DownloadFile(imageURL, Path.Combine(nyaFolder_saved, imageName));
                 category.notif = "Image Downloaded!";
-                popup popup = new popup();
-                popup.Visible = true;
+                new ToastContentBuilder()
+                .AddText("Image Downloaded!")
+                .Show();
                 currentLogFile += "[" + DateTime.Now.ToString("yyyyy MM dd HH:mm:ss") + "] File downloaded" + "\n" + Environment.NewLine;
-                notifications.Text = "Nya Downloaded!";
-                notifications.Visible = true;
-                Thread.Sleep(3000);
-                notifications.Visible = false;
             }
         }
 
