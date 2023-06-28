@@ -1,4 +1,4 @@
-﻿// 0.0.0.1
+// 0.0.0.1
 
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Nya_Desktop
 {
@@ -24,22 +25,21 @@ namespace Nya_Desktop
         ContextMenu cm = new ContextMenu();
         string specificFolder;
         string currentLogFile;
-        string imageURL;
-        string category = "waifu";
+        string imageURL = "https://cdn.waifu.im/7581.jpg";
+
 
         public Form1()
         {
+            category.set = "waifu";
             InitializeComponent();
-
-            buttons_disappear();
-
+            notifications.Visible = false;
 
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = true;
 
             AppDomain.CurrentDomain.ProcessExit += new EventHandler(CurrentDomain_ProcessExit);
-            currentLogFile += DateTime.Now.ToString("yyyyy MM dd HH:mm:ss") + "] Component Inicilized" + "\n";
+            currentLogFile += DateTime.Now.ToString("yyyyy MM dd HH:mm:ss") + "] Component Initialized" + "\n";
 
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             currentLogFile += "Environment Folder Opened | at: " + DateTime.Now.ToString("yyyyy MM dd HH:mm:ss") + "\n";
@@ -94,7 +94,7 @@ namespace Nya_Desktop
             PictureBox pb1 = pictureBox1;
             using (var client = new WebClient())
             {
-                var URL = "https://waifu.pics/api/sfw/" + category;
+                var URL = "https://waifu.pics/api/sfw/" + category.set;
                 currentLogFile += "[" + DateTime.Now.ToString("yyyyy MM dd HH:mm:ss") + "] URL set" + Environment.NewLine;
                 var responseStr = client.DownloadString(URL);
                 currentLogFile += "[" + DateTime.Now.ToString("yyyyy MM dd HH:mm:ss") + "] Initial URL recieved: " + responseStr + Environment.NewLine;
@@ -117,14 +117,6 @@ namespace Nya_Desktop
             File.WriteAllText(Path.Combine(Path.Combine(specificFolder, "logs"), "log_" + DateTime.Now.ToString("yyyyy_MM_dd_HH_mm_ss")) + ".log", currentLogFile);
         }
 
-        private void open_Click(object sender, EventArgs e)
-        {
-            string localFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string nyaFolder = Path.Combine(localFolder, "nya_desktop");
-            string nyaFolder_saved = Path.Combine(nyaFolder, "saved");
-            Process.Start(nyaFolder_saved);
-        }
-
         private void dl_Click(object sender, EventArgs e)
         {
             string localFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -137,269 +129,52 @@ namespace Nya_Desktop
             using (WebClient client = new WebClient())
             {
                 client.DownloadFile(imageURL, Path.Combine(nyaFolder_saved, imageName));
+                category.notif = "Image Downloaded!";
+                popup popup = new popup();
+                popup.Visible = true;
                 currentLogFile += "[" + DateTime.Now.ToString("yyyyy MM dd HH:mm:ss") + "] File downloaded" + "\n" + Environment.NewLine;
+                notifications.Text = "Nya Downloaded!";
+                notifications.Visible = true;
+                Thread.Sleep(3000);
+                notifications.Visible = false;
             }
         }
 
-        private void change_Click(object sender, EventArgs e)
+        private void settings_Click(object sender, EventArgs e)
         {
-            buttons_appear();
+            menu menu = new menu();
+            menu.Visible = true;
+        }
+    }
+
+    class category
+    {
+        public static string Category = "waifu";
+
+        public static string set
+        {
+            get
+            {
+                return Category;
+            }
+            set
+            {
+                Category = value;
+            }
         }
 
-        private void kill_Click(object sender, EventArgs e)
-        {
-            category = "kill";
-            buttons_disappear();
-        }
+        public static string notif = "";
 
-        private void kiss_Click(object sender, EventArgs e)
+        public static string notifications
         {
-            category = "kiss";
-            buttons_disappear();
-        }
-
-        private void blush_Click(object sender, EventArgs e)
-        {
-            category = "blush";
-            buttons_disappear();
-        }
-
-        private void hug_Click(object sender, EventArgs e)
-        {
-            category = "hug";
-            buttons_disappear();
-        }
-
-        private void cry_Click(object sender, EventArgs e)
-        {
-            category = "cry";
-            buttons_disappear();
-        }
-
-        private void handhold_Click(object sender, EventArgs e)
-        {
-            category = "handhold";
-            buttons_disappear();
-        }
-
-        private void cringe_Click(object sender, EventArgs e)
-        {
-            category = "cringe";
-            buttons_disappear();
-        }
-
-        private void dance_Click(object sender, EventArgs e)
-        {
-            category = "dance";
-            buttons_disappear();
-        }
-
-        private void highfive_Click(object sender, EventArgs e)
-        {
-            category = "highfive";
-            buttons_disappear();
-        }
-
-        private void wave_Click(object sender, EventArgs e)
-        {
-            category = "wave";
-            buttons_disappear();
-        }
-
-        private void poke_Click(object sender, EventArgs e)
-        {
-            category = "poke";
-            buttons_disappear();
-        }
-
-        private void wink_Click(object sender, EventArgs e)
-        {
-            category = "wink";
-            buttons_disappear();
-        }
-
-        private void smile_Click(object sender, EventArgs e)
-        {
-            category = "smile";
-            buttons_disappear();
-        }
-
-        private void nom_Click(object sender, EventArgs e)
-        {
-            category = "nom";
-            buttons_disappear();
-        }
-
-        private void happy_Click(object sender, EventArgs e)
-        {
-            category = "happy";
-            buttons_disappear();
-        }
-
-        private void cuddle_Click(object sender, EventArgs e)
-        {
-            category = "cuddle";
-            buttons_disappear();
-        }
-
-        private void bully_Click(object sender, EventArgs e)
-        {
-            category = "bully";
-            buttons_disappear();
-        }
-
-        private void yeet_Click(object sender, EventArgs e)
-        {
-            category = "yeet";
-            buttons_disappear();
-        }
-
-        private void kick_Click(object sender, EventArgs e)
-        {
-            category = "kick";
-            buttons_disappear();
-        }
-
-        private void slap_Click(object sender, EventArgs e)
-        {
-            category = "slap";
-            buttons_disappear();
-        }
-
-        private void bonk_Click(object sender, EventArgs e)
-        {
-            category = "bonk";
-            buttons_disappear();
-        }
-
-        private void megumin_Click(object sender, EventArgs e)
-        {
-            category = "megumin";
-            buttons_disappear();
-        }
-
-        private void shinobu_Click(object sender, EventArgs e)
-        {
-            category = "shinobu";
-            buttons_disappear();
-        }
-
-        private void smug_Click(object sender, EventArgs e)
-        {
-            category = "smug";
-            buttons_disappear();
-        }
-
-        private void glomp_Click(object sender, EventArgs e)
-        {
-            category = "slomp";
-            buttons_disappear();
-        }
-
-        private void bite_Click(object sender, EventArgs e)
-        {
-            category = "bite";
-            buttons_disappear();
-        }
-
-        private void pat_Click(object sender, EventArgs e)
-        {
-            category = "pat";
-            buttons_disappear();
-        }
-
-        private void neko_Click(object sender, EventArgs e)
-        {
-            category = "neko";
-            buttons_disappear();
-        }
-
-        private void waifu_Click(object sender, EventArgs e)
-        {
-            category = "waifu";
-            buttons_disappear();
-        }
-
-        private void lick_Click(object sender, EventArgs e)
-        {
-            category = "lick";
-            buttons_disappear();
-        }
-
-        private void awoo_Click(object sender, EventArgs e)
-        {
-            category = "awoo";
-            buttons_disappear();
-        }
-
-        public void buttons_disappear()
-        {
-            kill.Visible = false;
-            waifu.Visible = false;
-            neko.Visible = false;
-            shinobu.Visible = false;
-            megumin.Visible = false;
-            bully.Visible = false;
-            cuddle.Visible = false;
-            cry.Visible = false;
-            hug.Visible = false;
-            awoo.Visible = false;
-            kiss.Visible = false;
-            lick.Visible = false;
-            pat.Visible = false;
-            smug.Visible = false;
-            bonk.Visible = false;
-            yeet.Visible = false;
-            blush.Visible = false;
-            smile.Visible = false;
-            wave.Visible = false;
-            highfive.Visible = false;
-            handhold.Visible = false;
-            nom.Visible = false;
-            bite.Visible = false;
-            glomp.Visible = false;
-            slap.Visible = false;
-            kick.Visible = false;
-            happy.Visible = false;
-            wink.Visible = false;
-            poke.Visible = false;
-            dance.Visible = false;
-            cringe.Visible = false;
-        }
-
-        public void buttons_appear()
-        {
-            kill.Visible = true;
-            waifu.Visible = true;
-            neko.Visible = true;
-            shinobu.Visible = true;
-            megumin.Visible = true;
-            bully.Visible = true;
-            cuddle.Visible = true;
-            cry.Visible = true;
-            hug.Visible = true;
-            awoo.Visible = true;
-            kiss.Visible = true;
-            lick.Visible = true;
-            pat.Visible = true;
-            smug.Visible = true;
-            bonk.Visible = true;
-            yeet.Visible = true;
-            blush.Visible = true;
-            smile.Visible = true;
-            wave.Visible = true;
-            highfive.Visible = true;
-            handhold.Visible = true;
-            nom.Visible = true;
-            bite.Visible = true;
-            glomp.Visible = true;
-            slap.Visible = true;
-            kick.Visible = true;
-            happy.Visible = true;
-            wink.Visible = true;
-            poke.Visible = true;
-            dance.Visible = true;
-            cringe.Visible = true;
+            get
+            {
+                return notif;
+            }
+            set
+            {
+                notif = value;
+            }
         }
     }
 }
