@@ -65,6 +65,9 @@
             this.open_local = new System.Windows.Forms.Button();
             this.cfu = new System.Windows.Forms.Button();
             this.currentCategory_lb = new System.Windows.Forms.Label();
+            this.changelogs = new System.Windows.Forms.Button();
+            this.buildID = new System.Windows.Forms.Label();
+            this.log = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // exit
@@ -381,7 +384,7 @@
             // 
             this.waifu.Location = new System.Drawing.Point(3, 366);
             this.waifu.Name = "waifu";
-            this.waifu.Size = new System.Drawing.Size(54, 81);
+            this.waifu.Size = new System.Drawing.Size(54, 52);
             this.waifu.TabIndex = 36;
             this.waifu.Text = "waifu";
             this.waifu.UseVisualStyleBackColor = true;
@@ -427,11 +430,43 @@
             this.currentCategory_lb.TabIndex = 70;
             this.currentCategory_lb.Text = "Current Category: waifu";
             // 
+            // changelogs
+            // 
+            this.changelogs.Location = new System.Drawing.Point(4, 153);
+            this.changelogs.Name = "changelogs";
+            this.changelogs.Size = new System.Drawing.Size(134, 23);
+            this.changelogs.TabIndex = 71;
+            this.changelogs.Text = "View Changelogs";
+            this.changelogs.UseVisualStyleBackColor = true;
+            this.changelogs.Click += new System.EventHandler(this.changelogs_Click);
+            // 
+            // buildID
+            // 
+            this.buildID.AutoSize = true;
+            this.buildID.Location = new System.Drawing.Point(1, 421);
+            this.buildID.Name = "buildID";
+            this.buildID.Size = new System.Drawing.Size(50, 13);
+            this.buildID.TabIndex = 72;
+            this.buildID.Text = "Build ID: ";
+            // 
+            // log
+            // 
+            this.log.Location = new System.Drawing.Point(4, 182);
+            this.log.Name = "log";
+            this.log.Size = new System.Drawing.Size(134, 23);
+            this.log.TabIndex = 73;
+            this.log.Text = "Create Logfile";
+            this.log.UseVisualStyleBackColor = true;
+            this.log.Click += new System.EventHandler(this.log_Click);
+            // 
             // menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(878, 450);
+            this.Controls.Add(this.log);
+            this.Controls.Add(this.buildID);
+            this.Controls.Add(this.changelogs);
             this.Controls.Add(this.currentCategory_lb);
             this.Controls.Add(this.cfu);
             this.Controls.Add(this.open_local);
@@ -515,5 +550,8 @@
         private System.Windows.Forms.Button open_local;
         private System.Windows.Forms.Button cfu;
         private System.Windows.Forms.Label currentCategory_lb;
+        private System.Windows.Forms.Button changelogs;
+        private System.Windows.Forms.Label buildID;
+        private System.Windows.Forms.Button log;
     }
 }

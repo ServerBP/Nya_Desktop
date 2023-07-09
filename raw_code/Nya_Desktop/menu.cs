@@ -8,9 +8,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Windows.UI.Xaml.Controls;
 
 namespace Nya_Desktop
 {
@@ -23,6 +25,22 @@ namespace Nya_Desktop
             this.MaximizeBox = false;
             this.MinimizeBox = true;
             currentCategory_lb.Text = "Current Category: " + category.set;
+
+
+            var domain = AppDomain.CreateDomain(nameof(Loader), AppDomain.CurrentDomain.Evidence, new AppDomainSetup { ApplicationBase = Path.GetDirectoryName(typeof(Loader).Assembly.Location) });
+            try
+            {
+                string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string specificFolder = Path.Combine(folder, "nya_desktop");
+                string specificFolder_mainFiles = Path.Combine(specificFolder, "mainFiles");
+                string nyaFile = Path.Combine(specificFolder_mainFiles, "Nya_Desktop.exe");
+                var loader = (Loader)domain.CreateInstanceAndUnwrap(typeof(Loader).Assembly.FullName, typeof(Loader).FullName);
+                buildID.Text = "Build ID:\n"+ loader.Load(nyaFile);
+            }
+            finally
+            {
+                AppDomain.Unload(domain);
+            }
         }
 
         private void kill_Click(object sender, EventArgs e)
@@ -221,36 +239,36 @@ namespace Nya_Desktop
 
         private void exit_Click(object sender, EventArgs e)
         {
+            category.log = "[MENU] Exit button pressed";
             this.Close();
         }
 
         private void menu_Load(object sender, EventArgs e)
         {
-
+            category.log = "[MENU] Menu loaded";
         }
 
         private void cfu_Click(object sender, EventArgs e)
         {
-            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string specificFolder = Path.Combine(folder, "nya_desktop");
-            string specificFolder_mainFiles = Path.Combine(specificFolder, "mainFiles");
-            string nyaUpdaterFile = Path.Combine(specificFolder_mainFiles, "nyaUpdater.exe");
-            if (!System.IO.File.Exists(nyaUpdaterFile))
+            category.log = "[MENU] Update now pressed";
+            Actions.updateNow();
+        }
+
+        private void log_Click(object sender, EventArgs e)
+        {
+            category.log = "[MENU] Log creation inicialized";
+            Actions.createLogs();
+        }
+
+        private void changelogs_Click(object sender, EventArgs e)
+        {
+            var uri = "https://github.com/ServerBP/Nya_Desktop/releases/tag/main";
+            var psi = new System.Diagnostics.ProcessStartInfo
             {
-                using (var client = new WebClient())
-                {
-                    client.DownloadFile("https://github.com/ServerBP/Nya_Desktop/raw/main/executables/nyaUpdater.exe", Path.Combine(specificFolder_mainFiles, "nyaUpdater.exe"));
-                    Process.Start(nyaUpdaterFile);
-                    Application.Exit();
-                    Environment.Exit(0);
-                }
-            }
-            else
-            {
-                Process.Start(nyaUpdaterFile);
-                Application.Exit();
-                Environment.Exit(0);
-            }
+                UseShellExecute = true,
+                FileName = uri
+            };
+            System.Diagnostics.Process.Start(psi);
         }
     }
 }
