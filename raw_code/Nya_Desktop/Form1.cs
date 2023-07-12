@@ -1,4 +1,4 @@
-﻿// 0.0.0.12
+﻿// 0.0.0.1
 
 using System;
 using System.Collections.Generic;
@@ -34,6 +34,11 @@ namespace Nya_Desktop
         public static string specificFolder_mainFiles = Path.Combine(specificFolder, "mainFiles");
         public static string specificFolder_logs = Path.Combine(specificFolder, "logs");
         public static string specificFolder_save = Path.Combine(specificFolder, "saved");
+
+        // we create out menu
+        menu menu = null;
+
+
         public Form1()
         {
             // setting the default category to waifu
@@ -188,26 +193,9 @@ namespace Nya_Desktop
             }
         }
 
-        // when the form is closing
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
 
-            if (e.CloseReason == CloseReason.WindowsShutDown) return; // if windows is shutting down
-            if (e.CloseReason == CloseReason.FormOwnerClosing) return; // if the menu is closing
-
-            // Confirm user wants to close
-            switch (MessageBox.Show(this, "Are you sure you want to close?", "Closing", MessageBoxButtons.YesNo))
-            {
-                case DialogResult.No:
-                    e.Cancel = true;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void dl_Click(object sender, EventArgs e) // when we click the DL button
+        // when we click the DL button
+        private void dl_Click(object sender, EventArgs e) 
         {
             category.log = "Folders combined";
             // we create a name for the image based on the URL
@@ -229,15 +217,54 @@ namespace Nya_Desktop
         // when the menu button is clicked
         private void settings_Click(object sender, EventArgs e)
         {
-            // we create a new menu instance and start it
-            menu menu = new menu();
-            menu.Visible = true;
-            category.log = "Menu started";
+            if (menu == null)
+            {
+                // we create a new menu instance and start it
+                menu = new menu();
+                menu.Visible = true;
+                category.log = "Menu started";
+                menu.FormClosed += menu_FormClosed;
+                category.log = "Menu close event created";
+            } else
+            {
+                // give the user a notification
+                new ToastContentBuilder()
+                .AddText("Menu is already open!")
+                .Show();
+                category.log = "Menu already exists notification sent";
+            }
         }
 
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
+        }
+
+
+        // when the form is closing
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+
+            if (e.CloseReason == CloseReason.WindowsShutDown) return; // if windows is shutting down
+            if (e.CloseReason == CloseReason.FormOwnerClosing) return; // if the menu is closing
+
+            // Confirm user wants to close
+            switch (MessageBox.Show(this, "Are you sure you want to close?", "Closing", MessageBoxButtons.YesNo))
+            {
+                case DialogResult.No:
+                    e.Cancel = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+        private void menu_FormClosed(object sender, EventArgs e)
+        {
+            menu = null;
+            category.log = "Menu closed";
         }
     }
 

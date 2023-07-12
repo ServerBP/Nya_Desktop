@@ -262,7 +262,22 @@ namespace Nya_Desktop
 
         private void changelogs_Click(object sender, EventArgs e)
         {
-            var uri = "https://github.com/ServerBP/Nya_Desktop/releases/tag/main";
+            string assembly;
+            var domain = AppDomain.CreateDomain(nameof(Loader), AppDomain.CurrentDomain.Evidence, new AppDomainSetup { ApplicationBase = Path.GetDirectoryName(typeof(Loader).Assembly.Location) });
+            try
+            {
+                string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string specificFolder = Path.Combine(folder, "nya_desktop");
+                string specificFolder_mainFiles = Path.Combine(specificFolder, "mainFiles");
+                string nyaFile = Path.Combine(specificFolder_mainFiles, "Nya_Desktop.exe");
+                var loader = (Loader)domain.CreateInstanceAndUnwrap(typeof(Loader).Assembly.FullName, typeof(Loader).FullName);
+                assembly = loader.Load(nyaFile);
+            }
+            finally
+            {
+                AppDomain.Unload(domain);
+            }
+            var uri = "https://github.com/ServerBP/Nya_Desktop/releases/tag/v" + assembly;
             var psi = new System.Diagnostics.ProcessStartInfo
             {
                 UseShellExecute = true,
