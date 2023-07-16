@@ -68,6 +68,8 @@
             this.changelogs = new System.Windows.Forms.Button();
             this.buildID = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.Button();
+            this.p_blueWay = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // exit
@@ -393,12 +395,12 @@
             // changeCategory_lb
             // 
             this.changeCategory_lb.AutoSize = true;
-            this.changeCategory_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.changeCategory_lb.Location = new System.Drawing.Point(3, 324);
+            this.changeCategory_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.changeCategory_lb.Location = new System.Drawing.Point(-2, 332);
             this.changeCategory_lb.Name = "changeCategory_lb";
-            this.changeCategory_lb.Size = new System.Drawing.Size(297, 39);
+            this.changeCategory_lb.Size = new System.Drawing.Size(368, 31);
             this.changeCategory_lb.TabIndex = 67;
-            this.changeCategory_lb.Text = "Change Category:";
+            this.changeCategory_lb.Text = "Change Waifu.pics Category:";
             // 
             // open_local
             // 
@@ -412,7 +414,7 @@
             // 
             // cfu
             // 
-            this.cfu.Location = new System.Drawing.Point(3, 43);
+            this.cfu.Location = new System.Drawing.Point(3, 52);
             this.cfu.Name = "cfu";
             this.cfu.Size = new System.Drawing.Size(135, 23);
             this.cfu.TabIndex = 69;
@@ -422,9 +424,11 @@
             // 
             // currentCategory_lb
             // 
+            this.currentCategory_lb.AllowDrop = true;
+            this.currentCategory_lb.AutoEllipsis = true;
             this.currentCategory_lb.AutoSize = true;
             this.currentCategory_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.currentCategory_lb.Location = new System.Drawing.Point(566, 337);
+            this.currentCategory_lb.Location = new System.Drawing.Point(0, 29);
             this.currentCategory_lb.Name = "currentCategory_lb";
             this.currentCategory_lb.Size = new System.Drawing.Size(205, 24);
             this.currentCategory_lb.TabIndex = 70;
@@ -459,11 +463,33 @@
             this.log.UseVisualStyleBackColor = true;
             this.log.Click += new System.EventHandler(this.log_Click);
             // 
+            // p_blueWay
+            // 
+            this.p_blueWay.Location = new System.Drawing.Point(4, 242);
+            this.p_blueWay.Name = "p_blueWay";
+            this.p_blueWay.Size = new System.Drawing.Size(75, 23);
+            this.p_blueWay.TabIndex = 74;
+            this.p_blueWay.Text = "Blue Way";
+            this.p_blueWay.UseVisualStyleBackColor = true;
+            this.p_blueWay.Click += new System.EventHandler(this.p_blueWay_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.Location = new System.Drawing.Point(-2, 208);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(215, 31);
+            this.label1.TabIndex = 75;
+            this.label1.Text = "Change to Pack:";
+            // 
             // menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(878, 450);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.p_blueWay);
             this.Controls.Add(this.log);
             this.Controls.Add(this.buildID);
             this.Controls.Add(this.changelogs);
@@ -553,5 +579,7 @@
         private System.Windows.Forms.Button changelogs;
         private System.Windows.Forms.Label buildID;
         private System.Windows.Forms.Button log;
+        private System.Windows.Forms.Button p_blueWay;
+        private System.Windows.Forms.Label label1;
     }
 }

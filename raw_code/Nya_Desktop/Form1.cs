@@ -34,6 +34,7 @@ namespace Nya_Desktop
         public static string specificFolder_mainFiles = Path.Combine(specificFolder, "mainFiles");
         public static string specificFolder_logs = Path.Combine(specificFolder, "logs");
         public static string specificFolder_save = Path.Combine(specificFolder, "saved");
+        public static string specificFolder_JSON = Path.Combine(specificFolder, "JSON");
 
         // we create out menu
         menu menu = null;
@@ -82,6 +83,12 @@ namespace Nya_Desktop
             {
                 Directory.CreateDirectory(specificFolder_save);
                 category.log = "NEW SAVE DIRECTORY CREATED";
+            }
+            // check if the JSON folder exists
+            if (!Directory.Exists(specificFolder_JSON))
+            {
+                Directory.CreateDirectory(specificFolder_JSON);
+                category.log = "NEW JSON DIRECTORY CREATED";
             }
 
 
@@ -171,26 +178,12 @@ namespace Nya_Desktop
         private void button1_Click(object sender, EventArgs e)
         {
             PictureBox pb1 = pictureBox1;
-            using (var client = new WebClient())
-            {
-                // we set the image URL
-                var URL = "https://waifu.pics/api/sfw/" + category.set;
-                category.log = "URL set to: " + URL;
-                // we download the image as a JSON
-                var responseStr = client.DownloadString(URL);
-                category.log = "Initial URL recieved: " + responseStr;
-                // we modify the JSON formatted string to get the URL
-                var newresponse = responseStr.Remove(responseStr.Length - 3);
-                // we set the imageURL variable to be the new URL
-                imageURL = newresponse.Substring(8, newresponse.Length - 8);
-                category.log = "Image URL created: " + imageURL;
-
-                // we set the image and scaling mode etc...
-                this.Controls.Add(pb1);
-                pb1.ImageLocation = imageURL;
-                pb1.SizeMode = PictureBoxSizeMode.Zoom;
-                category.log = "Image set to: " + imageURL;
-            }
+            imageURL = Actions.getImage(category.API);
+            // we set the size and stuff for the window
+            this.Controls.Add(pb1);
+            pb1.ImageLocation = imageURL;
+            pb1.SizeMode = PictureBoxSizeMode.Zoom;
+            category.log = "Image set to: " + imageURL;
         }
 
 
@@ -277,7 +270,7 @@ namespace Nya_Desktop
         public static string set
         {
             get{return Category;}
-            set{ Category = value; category.log = "Category set to: " + value; }
+            set{ Category = value; category.log = "Category set to: " + value; category.API = "waifu"; }
         }
 
 
@@ -296,6 +289,15 @@ namespace Nya_Desktop
         {
             get { return logString; }
             set { logString += "[" + DateTime.Now.ToString("yyyyy MM dd HH:mm:ss") + "] " + value + Environment.NewLine; }
+        }
+
+
+        // the API type (for ex.: waifu, p:blue_way)
+        public static string APIType = "";
+        public static string API
+        {
+            get { return APIType; }
+            set { APIType = value; }
         }
     }
 
@@ -336,6 +338,54 @@ namespace Nya_Desktop
             string specificFolder = Path.Combine(folder, "nya_desktop");
             category.log = "Folders combined";
             System.IO.File.WriteAllText(Path.Combine(Path.Combine(specificFolder, "logs"), "log_" + DateTime.Now.ToString("yyyyy_MM_dd_HH_mm_ss")) + ".log", category.log);
+        }
+
+        // the function that gets an image
+        public static string getImage(string API)
+        {
+            // we create the default response incase anything goes wrong
+            string finalImageURL = "https://cdn.waifu.im/7581.jpg";
+            // if the api is the waifu.pics API
+            if (API == "waifu")
+            {
+                using (var client = new WebClient())
+                {
+                    // we set the image URL
+                    var URL = "https://waifu.pics/api/sfw/" + category.set;
+                    category.log = "URL set to: " + URL;
+                    // we download the image as a JSON
+                    var responseStr = client.DownloadString(URL);
+                    category.log = "Initial URL recieved: " + responseStr;
+                    // we modify the JSON formatted string to get the URL
+                    var newresponse = responseStr.Remove(responseStr.Length - 3);
+                    // we set the imageURL variable to be the new URL
+                    finalImageURL = newresponse.Substring(8, newresponse.Length - 8);
+                    category.log = "Image URL created: " + finalImageURL;
+                }
+            }
+            // if the API is a pack
+            if (API.StartsWith("p:"))
+            {
+                // we get the pack name as a variable
+                string packName = API.Substring(2);
+                category.log = "Pack found with the name: " + packName;
+
+                string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string specificFolder = Path.Combine(folder, "nya_desktop");
+                string specificFolder_JSON = Path.Combine(specificFolder, "JSON");
+
+                string JSONFile = Path.Combine(specificFolder_JSON, packName + ".json");
+                category.log = "JSON file found at: " + JSONFile;
+                // we check the amount of lines in the file
+                int lineCount = System.IO.File.ReadAllLines(JSONFile).Length;
+                // we create a random variable
+                Random rnd = new Random();
+                int randomLine = rnd.Next(1, lineCount);
+                category.log = "Random line from pack is: " + randomLine;
+                // we read the random line from the file
+                finalImageURL = System.IO.File.ReadLines(JSONFile).ElementAtOrDefault(randomLine - 1);
+            }
+            return finalImageURL;
         }
     }
 }

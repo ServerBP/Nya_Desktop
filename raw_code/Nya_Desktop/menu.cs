@@ -285,5 +285,24 @@ namespace Nya_Desktop
             };
             System.Diagnostics.Process.Start(psi);
         }
+
+        private void p_blueWay_Click(object sender, EventArgs e)
+        {
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string specificFolder = Path.Combine(folder, "nya_desktop");
+            string JSONFolder = Path.Combine(specificFolder, "JSON");
+            using (var client = new WebClient())
+            {
+                client.DownloadFile("https://raw.githubusercontent.com/ServerBP/Nya_Desktop/main/packs/JSON/BlueWay.json", Path.Combine(JSONFolder, "BlueWay.json"));
+
+            }
+            category.API = "p:BlueWay";
+            currentCategory_lb.Text = "Current Category: Blue Way Pack";
+        }
+
+        private void packList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
