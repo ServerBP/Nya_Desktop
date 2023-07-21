@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Windows.UI.Xaml.Controls;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace Nya_Desktop
 {
@@ -26,14 +26,13 @@ namespace Nya_Desktop
             this.MinimizeBox = true;
             currentCategory_lb.Text = "Current Category: " + category.set;
 
-
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string specificFolder = Path.Combine(folder, "nya_desktop");
+            string specificFolder_mainFiles = Path.Combine(specificFolder, "mainFiles");
+            string nyaFile = Path.Combine(specificFolder_mainFiles, "Nya_Desktop.exe");
             var domain = AppDomain.CreateDomain(nameof(Loader), AppDomain.CurrentDomain.Evidence, new AppDomainSetup { ApplicationBase = Path.GetDirectoryName(typeof(Loader).Assembly.Location) });
             try
             {
-                string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                string specificFolder = Path.Combine(folder, "nya_desktop");
-                string specificFolder_mainFiles = Path.Combine(specificFolder, "mainFiles");
-                string nyaFile = Path.Combine(specificFolder_mainFiles, "Nya_Desktop.exe");
                 var loader = (Loader)domain.CreateInstanceAndUnwrap(typeof(Loader).Assembly.FullName, typeof(Loader).FullName);
                 buildID.Text = "Build ID:\n"+ loader.Load(nyaFile);
             }
@@ -41,6 +40,8 @@ namespace Nya_Desktop
             {
                 AppDomain.Unload(domain);
             }
+
+            
         }
 
         private void kill_Click(object sender, EventArgs e)
@@ -246,6 +247,18 @@ namespace Nya_Desktop
         private void menu_Load(object sender, EventArgs e)
         {
             category.log = "[MENU] Menu loaded";
+
+
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            string specificFolder = Path.Combine(folder, "nya_desktop");
+            string JSONFolder = Path.Combine(specificFolder, "JSON");
+            DirectoryInfo d = new DirectoryInfo(JSONFolder);
+            category.log = "Started search for files...";
+            foreach (var file in d.GetFiles("*.json"))
+            {
+                packsDropdown.Items.Add(file.Name.Remove(file.Name.Length - 5));
+                category.log = "Added item: " + file.Name + " to the items list.";
+            }
         }
 
         private void cfu_Click(object sender, EventArgs e)
@@ -286,23 +299,68 @@ namespace Nya_Desktop
             System.Diagnostics.Process.Start(psi);
         }
 
-        private void p_blueWay_Click(object sender, EventArgs e)
+        private void packsDropdown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (packsDropdown.SelectedItem.ToString() == "BlueWay")
+            {
+                string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string specificFolder = Path.Combine(folder, "nya_desktop");
+                string JSONFolder = Path.Combine(specificFolder, "JSON");
+                using (var client = new WebClient())
+                {
+                    client.DownloadFile("https://raw.githubusercontent.com/ServerBP/Nya_Desktop/main/packs/JSON/BlueWay.json", Path.Combine(JSONFolder, "BlueWay.json"));
+                }
+                category.API = "p:" + packsDropdown.SelectedItem.ToString();
+                currentCategory_lb.Text = "Current Category: " + packsDropdown.SelectedItem.ToString() + " Pack";
+                category.log = "Set new pack to: " + packsDropdown.SelectedItem.ToString();
+            }
+            else
+            {
+                category.API = "p:" + packsDropdown.SelectedItem.ToString();
+                currentCategory_lb.Text = "Current Category: " + packsDropdown.SelectedItem.ToString() + " Pack";
+                category.log = "Set new pack to: " + packsDropdown.SelectedItem.ToString();
+            }
+        }
+
+        private void dlPacks_Click(object sender, EventArgs e)
+        {
+            // open the JSON github folder in the default browser
+            var uri = "https://github.com/ServerBP/Nya_Desktop/tree/main/packs/JSON";
+            var psi = new System.Diagnostics.ProcessStartInfo
+            {
+                UseShellExecute = true,
+                FileName = uri
+            };
+            System.Diagnostics.Process.Start(psi);
+        }
+
+        private void importPacks_Click(object sender, EventArgs e)
         {
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string specificFolder = Path.Combine(folder, "nya_desktop");
             string JSONFolder = Path.Combine(specificFolder, "JSON");
-            using (var client = new WebClient())
+            OpenFileDialog opd = new OpenFileDialog();
+            opd.Title = "Secelt your pack file!";
+            opd.Filter = "Json files (*.json)|*.json|Text files (*.txt)|*.txt";
+            opd.FileName = "Select your pack file";
+            category.log = "File select dialog shown";
+            if (opd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                client.DownloadFile("https://raw.githubusercontent.com/ServerBP/Nya_Desktop/main/packs/JSON/BlueWay.json", Path.Combine(JSONFolder, "BlueWay.json"));
-
+                FileInfo fi = new FileInfo(opd.FileName);
+                System.IO.File.Move(opd.FileName, Path.Combine(JSONFolder, fi.Name));
+                category.log = "File moved!";
             }
-            category.API = "p:BlueWay";
-            currentCategory_lb.Text = "Current Category: Blue Way Pack";
+            new ToastContentBuilder()
+                .AddText("Successfully imported pack!")
+                .Show();
+            category.log = "Gave user a notification about the import";
         }
 
-        private void packList_SelectedIndexChanged(object sender, EventArgs e)
+        private void addToPack_Click(object sender, EventArgs e)
         {
-
+            var addToPacksForm = new addToPackForm();
+            addToPacksForm.Show();
+            category.log = "AddPacks Form inicialized";
         }
     }
 }

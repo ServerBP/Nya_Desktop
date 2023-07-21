@@ -26,8 +26,6 @@ namespace Nya_Desktop
 {
     public partial class Form1 : Form
     {
-        // setting the default image URL
-        string imageURL = "https://cdn.waifu.im/7581.jpg";
         // we define all of the needed variables
         public static string folder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         public static string specificFolder = Path.Combine(folder, "nya_desktop");
@@ -178,12 +176,12 @@ namespace Nya_Desktop
         private void button1_Click(object sender, EventArgs e)
         {
             PictureBox pb1 = pictureBox1;
-            imageURL = Actions.getImage(category.API);
+            category.currentURL = Actions.getImage(category.API);
             // we set the size and stuff for the window
             this.Controls.Add(pb1);
-            pb1.ImageLocation = imageURL;
+            pb1.ImageLocation = category.currentURL;
             pb1.SizeMode = PictureBoxSizeMode.Zoom;
-            category.log = "Image set to: " + imageURL;
+            category.log = "Image set to: " + category.currentURL;
         }
 
 
@@ -192,12 +190,12 @@ namespace Nya_Desktop
         {
             category.log = "Folders combined";
             // we create a name for the image based on the URL
-            var imageName = imageURL.Substring(21, imageURL.Length - 21);
+            var imageName = category.currentURL.Substring(21, category.currentURL.Length - 21);
             category.log = "Image name created: " + imageName;
             using (WebClient client = new WebClient())
             {
                 // we download the image to the right place
-                client.DownloadFile(imageURL, Path.Combine(specificFolder_save, imageName));
+                client.DownloadFile(category.currentURL, Path.Combine(specificFolder_save, imageName));
                 category.notif = "Image Downloaded!";
                 // we send a windows notification to the user
                 new ToastContentBuilder()
@@ -298,6 +296,15 @@ namespace Nya_Desktop
         {
             get { return APIType; }
             set { APIType = value; }
+        }
+
+
+        // the current image URL
+        public static string URL = "https://cdn.waifu.im/7581.jpg";
+        public static string currentURL
+        {
+            get { return URL; }
+            set { URL = value; }
         }
     }
 

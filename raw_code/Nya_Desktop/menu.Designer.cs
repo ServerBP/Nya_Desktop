@@ -68,8 +68,14 @@
             this.changelogs = new System.Windows.Forms.Button();
             this.buildID = new System.Windows.Forms.Label();
             this.log = new System.Windows.Forms.Button();
-            this.p_blueWay = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.packsDropdown = new System.Windows.Forms.ComboBox();
+            this.dlPacks = new System.Windows.Forms.Button();
+            this.general_lb = new System.Windows.Forms.Label();
+            this.development_lb = new System.Windows.Forms.Label();
+            this.importPacks = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.addToPack = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // exit
@@ -396,7 +402,7 @@
             // 
             this.changeCategory_lb.AutoSize = true;
             this.changeCategory_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.changeCategory_lb.Location = new System.Drawing.Point(-2, 332);
+            this.changeCategory_lb.Location = new System.Drawing.Point(0, 332);
             this.changeCategory_lb.Name = "changeCategory_lb";
             this.changeCategory_lb.Size = new System.Drawing.Size(368, 31);
             this.changeCategory_lb.TabIndex = 67;
@@ -404,9 +410,9 @@
             // 
             // open_local
             // 
-            this.open_local.Location = new System.Drawing.Point(4, 81);
+            this.open_local.Location = new System.Drawing.Point(5, 105);
             this.open_local.Name = "open_local";
-            this.open_local.Size = new System.Drawing.Size(134, 65);
+            this.open_local.Size = new System.Drawing.Size(134, 36);
             this.open_local.TabIndex = 68;
             this.open_local.Text = "Open Local Folder";
             this.open_local.UseVisualStyleBackColor = true;
@@ -414,7 +420,7 @@
             // 
             // cfu
             // 
-            this.cfu.Location = new System.Drawing.Point(3, 52);
+            this.cfu.Location = new System.Drawing.Point(4, 76);
             this.cfu.Name = "cfu";
             this.cfu.Size = new System.Drawing.Size(135, 23);
             this.cfu.TabIndex = 69;
@@ -436,9 +442,9 @@
             // 
             // changelogs
             // 
-            this.changelogs.Location = new System.Drawing.Point(4, 153);
+            this.changelogs.Location = new System.Drawing.Point(6, 176);
             this.changelogs.Name = "changelogs";
-            this.changelogs.Size = new System.Drawing.Size(134, 23);
+            this.changelogs.Size = new System.Drawing.Size(133, 23);
             this.changelogs.TabIndex = 71;
             this.changelogs.Text = "View Changelogs";
             this.changelogs.UseVisualStyleBackColor = true;
@@ -455,7 +461,7 @@
             // 
             // log
             // 
-            this.log.Location = new System.Drawing.Point(4, 182);
+            this.log.Location = new System.Drawing.Point(166, 76);
             this.log.Name = "log";
             this.log.Size = new System.Drawing.Size(134, 23);
             this.log.TabIndex = 73;
@@ -463,33 +469,91 @@
             this.log.UseVisualStyleBackColor = true;
             this.log.Click += new System.EventHandler(this.log_Click);
             // 
-            // p_blueWay
-            // 
-            this.p_blueWay.Location = new System.Drawing.Point(4, 242);
-            this.p_blueWay.Name = "p_blueWay";
-            this.p_blueWay.Size = new System.Drawing.Size(75, 23);
-            this.p_blueWay.TabIndex = 74;
-            this.p_blueWay.Text = "Blue Way";
-            this.p_blueWay.UseVisualStyleBackColor = true;
-            this.p_blueWay.Click += new System.EventHandler(this.p_blueWay_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label1.Location = new System.Drawing.Point(-2, 208);
+            this.label1.Location = new System.Drawing.Point(0, 301);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(215, 31);
             this.label1.TabIndex = 75;
             this.label1.Text = "Change to Pack:";
+            // 
+            // packsDropdown
+            // 
+            this.packsDropdown.FormattingEnabled = true;
+            this.packsDropdown.Location = new System.Drawing.Point(215, 308);
+            this.packsDropdown.Name = "packsDropdown";
+            this.packsDropdown.Size = new System.Drawing.Size(166, 21);
+            this.packsDropdown.TabIndex = 76;
+            this.packsDropdown.SelectedIndexChanged += new System.EventHandler(this.packsDropdown_SelectedIndexChanged);
+            // 
+            // dlPacks
+            // 
+            this.dlPacks.Location = new System.Drawing.Point(6, 147);
+            this.dlPacks.Name = "dlPacks";
+            this.dlPacks.Size = new System.Drawing.Size(133, 23);
+            this.dlPacks.TabIndex = 77;
+            this.dlPacks.Text = "Download Packs";
+            this.dlPacks.UseVisualStyleBackColor = true;
+            this.dlPacks.Click += new System.EventHandler(this.dlPacks_Click);
+            // 
+            // general_lb
+            // 
+            this.general_lb.AutoSize = true;
+            this.general_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.general_lb.Location = new System.Drawing.Point(0, 53);
+            this.general_lb.Name = "general_lb";
+            this.general_lb.Size = new System.Drawing.Size(70, 20);
+            this.general_lb.TabIndex = 78;
+            this.general_lb.Text = "General:";
+            // 
+            // development_lb
+            // 
+            this.development_lb.AutoSize = true;
+            this.development_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.development_lb.Location = new System.Drawing.Point(167, 53);
+            this.development_lb.Name = "development_lb";
+            this.development_lb.Size = new System.Drawing.Size(107, 20);
+            this.development_lb.TabIndex = 79;
+            this.development_lb.Text = "Development:";
+            // 
+            // importPacks
+            // 
+            this.importPacks.Location = new System.Drawing.Point(6, 205);
+            this.importPacks.Name = "importPacks";
+            this.importPacks.Size = new System.Drawing.Size(133, 23);
+            this.importPacks.TabIndex = 80;
+            this.importPacks.Text = "Import Packs";
+            this.importPacks.UseVisualStyleBackColor = true;
+            this.importPacks.Click += new System.EventHandler(this.importPacks_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openPack";
+            // 
+            // addToPack
+            // 
+            this.addToPack.Location = new System.Drawing.Point(6, 234);
+            this.addToPack.Name = "addToPack";
+            this.addToPack.Size = new System.Drawing.Size(133, 37);
+            this.addToPack.TabIndex = 81;
+            this.addToPack.Text = "Add Current Image to Pack";
+            this.addToPack.UseVisualStyleBackColor = true;
+            this.addToPack.Click += new System.EventHandler(this.addToPack_Click);
             // 
             // menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(878, 450);
+            this.Controls.Add(this.addToPack);
+            this.Controls.Add(this.importPacks);
+            this.Controls.Add(this.development_lb);
+            this.Controls.Add(this.general_lb);
+            this.Controls.Add(this.dlPacks);
+            this.Controls.Add(this.packsDropdown);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.p_blueWay);
             this.Controls.Add(this.log);
             this.Controls.Add(this.buildID);
             this.Controls.Add(this.changelogs);
@@ -579,7 +643,13 @@
         private System.Windows.Forms.Button changelogs;
         private System.Windows.Forms.Label buildID;
         private System.Windows.Forms.Button log;
-        private System.Windows.Forms.Button p_blueWay;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox packsDropdown;
+        private System.Windows.Forms.Button dlPacks;
+        private System.Windows.Forms.Label general_lb;
+        private System.Windows.Forms.Label development_lb;
+        private System.Windows.Forms.Button importPacks;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button addToPack;
     }
 }
